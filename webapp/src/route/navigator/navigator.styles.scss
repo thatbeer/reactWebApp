@@ -1,0 +1,41 @@
+.navigator {
+    height: 70px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    margin-top: 25px;
+    padding: 20px 15px;
+    
+  
+    .logo-container {
+      height: 100%;
+      width: 70px;
+      padding: 0px 15px;
+      
+    }
+  
+    .nav-link-container {
+      width: 50%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+  
+      .nav-link {
+        padding: 10px 25px;
+        cursor: pointer;
+        
+      }
+    }
+
+    .logo-name {
+        justify-content: flex-end;
+        display: flex;
+        align-items :center;
+        
+
+
+    }
+  }
+  
