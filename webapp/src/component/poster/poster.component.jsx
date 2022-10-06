@@ -4,28 +4,35 @@ import axios from 'axios';
 import { useEffect } from 'react';
 
 const PostPage = () => {
-    const [posts , setPosts] = useState('');
-    const { userId , id , title , body} = posts;
+    const [posts , setPosts] = useState({});
+    const [ids ,setIds] = useState(1)
+
+    const [idOnChanged,setIdOnChanged] = useState(1);
+
+    const onClickhandler = () => {
+        setIdOnChanged(ids)
+    };
 
     useEffect(() => {
-        axios.get(`https://jsonplaceholder.typicode.com/posters`).then(response =>{
+        axios.get(`https://jsonplaceholder.typicode.com/posts/${idOnChanged}`).then(response =>{
             console.log(response);
             setPosts(response.data)
         }).catch(error => {
             console.log(error)
         });
-    }, [setPosts]);
+    }, [idOnChanged]);
 
 
     return (
         <div className='card'>
             <div>HHHHHH</div>
+            <input type="text" value={ids} onChange={event => setIds(event.target.value)} />
+            <button type="button" onClick={onClickhandler}>Fetch Post</button>
             <div className='card-header'>
-                name : {title}
-                <button className='outline-danger' >delete</button>
+                name : {posts.title}
             </div>
             <div className='card-body'>
-                body : {body}
+                body : {posts.body}
             </div>
         </div>
     );
