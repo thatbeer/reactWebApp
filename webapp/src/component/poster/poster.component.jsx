@@ -3,37 +3,49 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useEffect } from 'react';
 
+
+import PosterSearchbox from './poster-searchbox';
+import Posterlist from './posterlist';  
+
+
 const PostPage = () => {
-    const [posts , setPosts] = useState({});
-    const [ids ,setIds] = useState(1)
+    const [posts , setPosts] = useState('');
+    const [searchField,setSearchField] = useState([]);
+    const [filteredPoster , setFilterPoster] = useState(posts);
 
-    const [idOnChanged,setIdOnChanged] = useState(1);
-
-    const onClickhandler = () => {
-        setIdOnChanged(ids)
-    };
 
     useEffect(() => {
-        axios.get(`https://jsonplaceholder.typicode.com/posts/${idOnChanged}`).then(response =>{
-            console.log(response);
-            setPosts(response.data)
-        }).catch(error => {
+        axios.get(`https://jsonplaceholder.typicode.com/posts`)
+        .then(response => response.json()).then((posters) => setPosts(posters))
+        .catch(error => {
             console.log(error)
         });
-    }, [idOnChanged]);
+    }, []);
+
+    useEffect(() => {
+        const newFilteredPosts = posts.filter((post) => {
+            return post.title.toLocaleLowerCase().includes(searchField);
+        });
+
+        setFilterPoster(newFilteredPosts);
+    }, [posts,searchField]);
+
+    const onSearchChange = (event) => {
+        const searchFieldString = event.target.value.toLocaleLowerCase();
+        setSearchField(searchFieldString);
+    }    
 
 
     return (
         <div className='card'>
-            <div>HHHHHH</div>
-            <input type="text" value={ids} onChange={event => setIds(event.target.value)} />
-            <button type="button" onClick={onClickhandler}>Fetch Post</button>
-            <div className='card-header'>
-                name : {posts.title}
-            </div>
-            <div className='card-body'>
-                body : {posts.body}
-            </div>
+            <h1>Posters Searcher</h1>
+            
+            <PosterSearchbox className='poster-search-box'
+                onChangeHandler={onSearchChange}
+                placeholder='search posters'
+            />
+
+            <Posterlist posts={filteredPoster} />
         </div>
     );
 };
